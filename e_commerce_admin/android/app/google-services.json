@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "666020578275",
+    "project_id": "apple-store-website",
+    "storage_bucket": "apple-store-website.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666020578275:android:0b2051478ffe266f9756d6",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666020578275-s36ocb2pq5k79dvs4epc2fjhfa00qupb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrnuJ3oMTsX6GbiTCiTmeLPp8Bm9_flIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666020578275-s36ocb2pq5k79dvs4epc2fjhfa00qupb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
