@@ -1,17 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
+import 'package:e_commerce/Container/banner_container.dart';
+import 'package:e_commerce/Container/category_container.dart';
+import 'package:e_commerce/Container/zone_container.dart';
+import 'package:e_commerce/Controllers/discount.dart';
 import 'package:e_commerce/Controllers/firestoreServices.dart';
 import 'package:e_commerce/model/categories.model.dart';
+import 'package:e_commerce/model/product.model.dart';
+import 'package:e_commerce/model/promo_Banner.model.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class CategoryContainer extends StatefulWidget {
-  const CategoryContainer({super.key});
+class HomePageMakeContainer extends StatefulWidget {
+  const HomePageMakeContainer({super.key});
 
   @override
-  State<CategoryContainer> createState() => _CategoryContainerState();
+  State<HomePageMakeContainer> createState() => _HomePageMakeContainerState();
 }
 
-class _CategoryContainerState extends State<CategoryContainer> {
+class _HomePageMakeContainerState extends State<HomePageMakeContainer> {
+  int min = 0;
+  minCalculator(int a, int b) {
+    return min = a < b ? a : b;
+  }
+
+  String symbol = getCurrencySymbol("INR");
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -23,21 +36,49 @@ class _CategoryContainerState extends State<CategoryContainer> {
             if (category.isEmpty) {
               return SizedBox();
             } else {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: category
-                      .map((e) => CategoryButton(image: e.img, name: e.name))
-                      .toList(),
-                ),
-              );
+              return StreamBuilder(
+                  stream: Firestoreservices().readBanner(),
+                  builder: (context, banner_snapshot) {
+                    if (banner_snapshot.hasData) {
+                      List<PromoBanner> banner =
+                          PromoBanner.fromJsonList(banner_snapshot.data!.docs)
+                              as List<PromoBanner>;
+                      if (banner.isEmpty) {
+                        return SizedBox();
+                      } else {
+                        return Column(
+                          children: [
+                            for (int i = 0;
+                                i <
+                                    minCalculator(snapshot.data!.docs.length,
+                                        banner_snapshot.data!.docs.length);
+                                i++)
+                              Column(
+                                children: [
+                                  ZoneContainer(
+                                      Category: snapshot.data!.docs[i]["name"]),
+                                  BannerContainer(
+                                      image: banner_snapshot.data!.docs[i]
+                                          ["image"],
+                                      category: banner_snapshot.data!.docs[i]
+                                          ["category"])
+                                ],
+                              )
+                          ],
+                        );
+                      }
+                    } else {
+                      return SizedBox();
+                    }
+                  });
             }
           } else {
             return Shimmer(
               // ignore: sized_box_for_whitespace, sort_child_properties_last
               child: Container(
                 width: double.infinity,
-                height: 95,
+                height: 100,
+                color: Colors.grey.shade200,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -99,52 +140,5 @@ class _CategoryContainerState extends State<CategoryContainer> {
             );
           }
         });
-  }
-}
-
-class CategoryButton extends StatefulWidget {
-  final String image, name;
-  const CategoryButton({super.key, required this.image, required this.name});
-  @override
-  State<CategoryButton> createState() => _CategoryButtonState();
-}
-
-class _CategoryButtonState extends State<CategoryButton> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, "/specific",
-            arguments: {"name": widget.name});
-      },
-      child: Container(
-        height: 95,
-        width: 95,
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-            color: Colors.grey.shade400,
-            borderRadius: BorderRadius.circular(20)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.network(
-              widget.image,
-              height: 50,
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Text(
-              "${widget.name.substring(0, 1).toUpperCase()}${widget.name.substring(1)}",
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

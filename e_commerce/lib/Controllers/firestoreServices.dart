@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Firestoreservices {
   User? user = FirebaseAuth.instance.currentUser;
   String use = "Users";
-  String banner = "shop_banner";
+  String banner = "shop_Banner";
   String promo = "shop_Promos";
   String coupon = "Shop_Coupon";
   String category = "shop_Categories";

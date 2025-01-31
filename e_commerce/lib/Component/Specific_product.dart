@@ -67,7 +67,7 @@ class _SpecificProductState extends State<SpecificProduct> {
                               ),
                               Text(
                                 product.name,
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(
@@ -84,6 +84,7 @@ class _SpecificProductState extends State<SpecificProduct> {
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500,
                                         decoration: TextDecoration.lineThrough),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   SizedBox(
                                     width: 4,
