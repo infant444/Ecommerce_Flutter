@@ -1,8 +1,11 @@
 import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
 import 'package:e_commerce/Controllers/discount.dart';
+import 'package:e_commerce/Provider/cart.provider.dart';
+import 'package:e_commerce/model/cart.model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pannable_rating_bar/flutter_pannable_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../model/product.model.dart';
 
@@ -156,7 +159,20 @@ class _ViewProductState extends State<ViewProduct> {
             height: 60,
             width: MediaQuery.of(context).size.width * .5,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<CartProvider>(context, listen: false)
+                    .addToCart(Cart(productId: argument.id, quantity: 1));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Added to cart"),
+                  action: SnackBarAction(
+                      label: "Go to Cart",
+                      textColor: Colors.orangeAccent.shade400,
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/cart");
+                      }),
+                  dismissDirection: DismissDirection.startToEnd,
+                ));
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,

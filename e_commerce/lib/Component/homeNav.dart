@@ -1,3 +1,4 @@
+import 'package:e_commerce/Component/cart.dart';
 import 'package:e_commerce/Component/home.dart';
 import 'package:e_commerce/Component/profile.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class Homenav extends StatefulWidget {
 
 class _HomenavState extends State<Homenav> {
   int selectedIndex = 0;
-  List Pages = [Home(), Text("Checkout"), Text("Cart"), Profile()];
+  List Pages = [Home(), Text("Checkout"), CartPage(), Profile()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

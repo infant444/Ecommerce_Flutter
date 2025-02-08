@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:e_commerce/Component/Specific_product.dart';
+import 'package:e_commerce/Component/cart.dart';
 import 'package:e_commerce/Component/discount.dart';
 import 'package:e_commerce/Component/homeNav.dart';
 import 'package:e_commerce/Component/login.dart';
@@ -7,6 +8,7 @@ import 'package:e_commerce/Component/signup.dart';
 import 'package:e_commerce/Component/update_user.dart';
 import 'package:e_commerce/Component/view_product.dart';
 import 'package:e_commerce/Controllers/auth_server.dart';
+import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:e_commerce/Provider/user.provider.dart';
 import 'package:e_commerce/firebase_options.dart';
 import 'package:e_commerce/theme.dart';
@@ -37,6 +39,7 @@ class Ecommerce extends StatelessWidget {
       builder: (light, dark) => MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => UserProvider()),
+          ChangeNotifierProvider(create: (context) => CartProvider()),
         ],
         child: MaterialApp(
           theme: light,
@@ -51,6 +54,7 @@ class Ecommerce extends StatelessWidget {
             "/discount": (context) => Discount(),
             "/specific": (context) => SpecificProduct(),
             "/view_Product": (context) => ViewProduct(),
+            "/cart": (context) => CartPage(),
           },
         ),
       ),
