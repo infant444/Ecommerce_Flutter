@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:e_commerce/Component/Specific_product.dart';
 import 'package:e_commerce/Component/cart.dart';
+import 'package:e_commerce/Component/checkout.dart';
 import 'package:e_commerce/Component/discount.dart';
 import 'package:e_commerce/Component/homeNav.dart';
 import 'package:e_commerce/Component/login.dart';
@@ -16,6 +17,7 @@ import 'package:e_commerce/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -24,6 +26,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: ".env");
+  // Stripe.publishableKey = dotenv.env["STRIPE_PUBLISHING_KEY"]!;
+  // Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  // Stripe.urlScheme = 'flutterstripe';
+  // await Stripe.instance.applySettings();
   runApp(const Ecommerce());
 }
 
@@ -55,6 +61,7 @@ class Ecommerce extends StatelessWidget {
             "/specific": (context) => SpecificProduct(),
             "/view_Product": (context) => ViewProduct(),
             "/cart": (context) => CartPage(),
+            "/checkout": (context) => Checkout(),
           },
         ),
       ),

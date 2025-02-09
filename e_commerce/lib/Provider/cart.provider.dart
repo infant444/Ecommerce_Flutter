@@ -68,8 +68,9 @@ class CartProvider extends ChangeNotifier {
   void calcuateTotalCost(List<Product> products, List<Cart> carts) {
     totalCost = 0;
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print(carts.length);
       for (int i = 0; i < carts.length; i++) {
-        totalCost = carts[i].quantity * products[i].new_price;
+        totalCost = totalCost + carts[i].quantity * products[i].new_price;
       }
       notifyListeners();
     });

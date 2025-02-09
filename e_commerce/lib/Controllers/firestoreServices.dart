@@ -50,6 +50,14 @@ class Firestoreservices {
         .orderBy("discount", descending: true)
         .snapshots();
   }
+// Verify coupon
+
+  Future<QuerySnapshot> verifyCoupon({required String code}) {
+    return FirebaseFirestore.instance
+        .collection(coupon)
+        .where("code", isEqualTo: code)
+        .get();
+  }
 
   Stream<QuerySnapshot> readCategory() {
     return FirebaseFirestore.instance

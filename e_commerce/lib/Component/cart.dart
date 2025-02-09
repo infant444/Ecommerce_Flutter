@@ -28,7 +28,7 @@ class _CartPageState extends State<CartPage> {
             child: CircularProgressIndicator(),
           );
         } else {
-          if (value.carts.isEmpty) {
+          if (value.carts.isEmpty || value.products.isEmpty) {
             return Center(
               child: Text("No item in cart"),
             );
@@ -60,7 +60,9 @@ class _CartPageState extends State<CartPage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/checkout");
+                  },
                   child: Text("Process to Checkout"),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
