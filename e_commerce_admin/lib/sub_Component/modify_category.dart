@@ -26,7 +26,7 @@ class ModifyCategory extends StatefulWidget {
 class _ModifyCategoryState extends State<ModifyCategory> {
   final formKey = GlobalKey<FormState>();
   final ImagePicker picker = ImagePicker();
-  late XFile? image = null;
+  late XFile? image;
   TextEditingController categoryController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   TextEditingController priorityController = TextEditingController();

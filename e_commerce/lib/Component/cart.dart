@@ -45,7 +45,7 @@ class _CartPageState extends State<CartPage> {
       }),
       bottomNavigationBar:
           Consumer<CartProvider>(builder: (context, value, child) {
-        if (value.carts.length == 0) {
+        if (value.carts.isEmpty) {
           return SizedBox();
         } else {
           return Container(

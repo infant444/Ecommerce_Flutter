@@ -49,6 +49,8 @@ dependencies:
   currency_code_to_currency_symbol: ^0.0.4
   custom_rating_bar: ^3.0.0
   flutter_pannable_rating_bar: ^2.7.2+1
+  intl: ^0.20.2
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:

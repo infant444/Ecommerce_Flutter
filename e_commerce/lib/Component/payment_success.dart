@@ -99,8 +99,10 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                         ),
                         Text("Order date"),
                         Spacer(),
-                        Text(
-                            "${DateTime.fromMillisecondsSinceEpoch(argu["create_at"]).toString().formattedDate()}"),
+                        Text(DateTime.fromMillisecondsSinceEpoch(
+                                argu["create_at"])
+                            .toString()
+                            .formattedDate()),
                         SizedBox(
                           width: 5,
                         )

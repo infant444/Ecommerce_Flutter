@@ -6,6 +6,8 @@ class FirestoreServices {
   String promo = "shop_Promos";
   String banner = "shop_Banner";
   String coupon = "Shop_Coupon";
+  String order = "shop_Order";
+
   // read data from shop_Categories collection of firestore
   Stream<QuerySnapshot> readCategories() {
     return FirebaseFirestore.instance
@@ -53,6 +55,13 @@ class FirestoreServices {
     required String id,
   }) async {
     await FirebaseFirestore.instance.collection(product).doc(id).delete();
+  }
+
+  Stream<QuerySnapshot> searchProductS(List<String> docIds) {
+    return FirebaseFirestore.instance
+        .collection(product)
+        .where(FieldPath.documentId, whereIn: docIds)
+        .snapshots();
   }
 
   //Promos and banner
@@ -105,5 +114,27 @@ class FirestoreServices {
     required String id,
   }) async {
     await FirebaseFirestore.instance.collection(coupon).doc(id).delete();
+  }
+
+  Future UpdateOrderStatus(
+      {required String docId, required String data}) async {
+    if (data == "ON_THE_WAY" || data == "CANCELLED") {
+      return FirebaseFirestore.instance.collection(order).doc(docId).update({
+        "status": data,
+        "onTheWayDate": DateTime.now().millisecondsSinceEpoch
+      });
+    } else {
+      return FirebaseFirestore.instance.collection(order).doc(docId).update({
+        "status": data,
+        "receivedDate": DateTime.now().millisecondsSinceEpoch
+      });
+    }
+  }
+
+  Stream<QuerySnapshot> readOrders() {
+    return FirebaseFirestore.instance
+        .collection(order)
+        .orderBy("create_at", descending: true)
+        .snapshots();
   }
 }

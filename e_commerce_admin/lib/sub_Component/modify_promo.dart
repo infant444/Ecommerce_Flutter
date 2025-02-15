@@ -23,7 +23,7 @@ class _ModifyPromoState extends State<ModifyPromo> {
   TextEditingController titleController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
   final ImagePicker picker = ImagePicker();
-  late XFile? image = null;
+  late XFile? image;
   bool _isInitialized = false;
   bool _ispromo = true;
   @override

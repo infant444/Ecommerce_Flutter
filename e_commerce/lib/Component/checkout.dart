@@ -87,7 +87,7 @@ class _CheckoutState extends State<Checkout> {
       "name": user.name,
       "phone": user.phone,
       "status": "Confirmed",
-      "user_id": CurrentUser!.uid,
+      "user_id": CurrentUser.uid,
       "address": user.address,
       "discount": discount,
       "total": cart.totalCost,

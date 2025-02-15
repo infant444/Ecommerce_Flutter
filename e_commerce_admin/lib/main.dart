@@ -5,9 +5,11 @@ import 'package:e_commerce_admin/Component/categories_page.dart';
 import 'package:e_commerce_admin/Component/coupon_page.dart';
 import 'package:e_commerce_admin/Component/home.dart';
 import 'package:e_commerce_admin/Component/login.dart';
+import 'package:e_commerce_admin/Component/order_page.dart';
 import 'package:e_commerce_admin/Component/product_page.dart';
 import 'package:e_commerce_admin/Component/promos_banner_page.dart';
 import 'package:e_commerce_admin/Component/signup.dart';
+import 'package:e_commerce_admin/Component/view_order.dart';
 import 'package:e_commerce_admin/Component/view_product.dart';
 import 'package:e_commerce_admin/controllers/auth_server.dart';
 import 'package:e_commerce_admin/provider/admin.provider.dart';
@@ -51,6 +53,8 @@ class Ecommerce_Admin extends StatelessWidget {
           "/update_promo": (context) => ModifyPromo(),
           "/coupon": (context) => CouponPage(),
           "/update_coupon": (context) => ModifyCoupon(),
+          "/order": (Context) => OrderPage(),
+          "/view_Order": (Context) => ViewOrder()
         },
       ),
     );

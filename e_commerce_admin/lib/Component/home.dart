@@ -60,7 +60,11 @@ class _AdminHomeState extends State<AdminHome> {
                   )),
               Row(
                 children: [
-                  DashboardButton(ontap: () {}, name: "Orders"),
+                  DashboardButton(
+                      ontap: () {
+                        Navigator.pushNamed(context, "/order");
+                      },
+                      name: "Orders"),
                   DashboardButton(
                       ontap: () {
                         Navigator.pushNamed(context, "/products");

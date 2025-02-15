@@ -102,7 +102,7 @@ class _PromosBannerPageState extends State<PromosBannerPage> {
                                       ],
                                     ));
                           },
-                          leading: Container(
+                          leading: SizedBox(
                             height: 50,
                             width: 50,
                             child: Image.network(

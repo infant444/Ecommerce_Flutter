@@ -38,7 +38,7 @@ class _HomenavState extends State<Homenav> {
             BottomNavigationBarItem(
                 icon: Consumer<CartProvider>(
                   builder: (context, value, child) {
-                    if (value.carts.length > 0) {
+                    if (value.carts.isNotEmpty) {
                       return Badge(
                         label: Text(value.carts.length.toString()),
                         child: Icon(Icons.shopping_cart_outlined),

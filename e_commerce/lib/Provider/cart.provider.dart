@@ -43,7 +43,7 @@ class CartProvider extends ChangeNotifier {
       for (int i = 0; i < carts.length; i++) {
         cartUids.add(carts[i].productId);
       }
-      if (carts.length > 0) {
+      if (carts.isNotEmpty) {
         readCartProduct(cartUids);
       }
       isLoading = false;

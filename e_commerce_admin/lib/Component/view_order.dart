@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
-import 'package:e_commerce/Container/additional_confirm.dart';
-import 'package:e_commerce/Container/order_status.dart';
-import 'package:e_commerce/Controllers/firestoreServices.dart';
-import 'package:e_commerce/model/order.model.dart';
-import 'package:e_commerce/model/product.model.dart';
+import 'package:e_commerce_admin/container/additional_confirm.dart';
+import 'package:e_commerce_admin/container/order_status.dart';
+import 'package:e_commerce_admin/controllers/firestore_services.dart';
+import 'package:e_commerce_admin/model/order.model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '../model/product.model.dart';
 
 class ViewOrder extends StatefulWidget {
   const ViewOrder({super.key});
@@ -111,7 +113,7 @@ class _ViewOrderState extends State<ViewOrder> {
                                     onTap: () {
                                       List<String> a = [];
                                       a.add(e.id);
-                                      Firestoreservices()
+                                      FirestoreServices()
                                           .searchProductS(a)
                                           .listen((snapshot) {
                                         List<Product> productData =
@@ -171,15 +173,16 @@ class _ViewOrderState extends State<ViewOrder> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
+                    Text(
+                      "Status : ${arg.status}",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Status",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
+              SizedBox(
+                height: 10,
               ),
               SizedBox(
                 height: 400,
@@ -192,90 +195,86 @@ class _ViewOrderState extends State<ViewOrder> {
               SizedBox(
                 height: 10,
               ),
-              arg.status != "CANCELLED"
-                  ? Center(
-                      child: SizedBox(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width * .75,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              showModalBottomSheet(
-                                  context: context,
-                                  barrierColor: Colors.black38.withOpacity(0.5),
-                                  backgroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(15))),
-                                  builder: (context) => Container(
-                                        height: 200,
-                                        width: double.infinity,
-                                        padding: EdgeInsets.all(13),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              "Modify this order",
-                                              style: TextStyle(
-                                                  fontSize: 25,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              "Choose what you want to do",
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          AdditionalConfirm(
-                                                              text:
-                                                                  "To confirm to cancel a order",
-                                                              onYes: () async {
-                                                                await Firestoreservices()
-                                                                    .CancleOrder(
-                                                                        id: arg
-                                                                            .id);
-                                                                Navigator.pop(
-                                                                    context);
-                                                                Navigator.pop(
-                                                                    context);
-                                                                setState(() {});
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(SnackBar(
-                                                                        content:
-                                                                            Text("The order cancel successfully")));
-                                                              },
-                                                              onNo: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              }));
-                                                },
-                                                child:
-                                                    Text("Cancel the order")),
-                                          ],
+              Center(
+                child: SizedBox(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * .75,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        showModalBottomSheet(
+                            context: context,
+                            barrierColor: Colors.black38.withOpacity(0.5),
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(15))),
+                            builder: (context) => Container(
+                                  height: 300,
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(13),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Modify this order",
+                                        style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Choose what you want set",
+                                        style: TextStyle(
+                                          fontSize: 18,
                                         ),
-                                      ));
-                            },
-                            child: Text("Modified order")),
-                      ),
-                    )
-                  : SizedBox(),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      TextButton(
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            await FirestoreServices()
+                                                .UpdateOrderStatus(
+                                                    docId: arg.id,
+                                                    data: "ON_THE_WAY");
+                                            setState(() {});
+                                          },
+                                          child: Text("Order Shipped")),
+                                      TextButton(
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            await FirestoreServices()
+                                                .UpdateOrderStatus(
+                                                    docId: arg.id,
+                                                    data: "DELIVERED");
+                                            setState(() {});
+                                          },
+                                          child: Text("Order Delivery")),
+                                      TextButton(
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                            await FirestoreServices()
+                                                .UpdateOrderStatus(
+                                                    docId: arg.id,
+                                                    data: "CANCELLED");
+                                            setState(() {});
+                                          },
+                                          child: Text("Order Cancel")),
+                                    ],
+                                  ),
+                                ));
+                      },
+                      child: Text("Modified order")),
+                ),
+              ),
             ],
           ),
         ),

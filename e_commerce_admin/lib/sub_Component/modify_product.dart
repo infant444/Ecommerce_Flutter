@@ -29,7 +29,7 @@ class _ModifyProductState extends State<ModifyProduct> {
   TextEditingController quantityController = TextEditingController();
   late int rating = 0;
   final ImagePicker picker = ImagePicker();
-  late XFile? image = null;
+  late XFile? image;
 
   Future<void> PickImage() async {
     image = await picker.pickImage(source: ImageSource.gallery);

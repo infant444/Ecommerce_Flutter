@@ -23,7 +23,7 @@ class _UpdateUserState extends State<UpdateUser> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _profileController = TextEditingController();
   final ImagePicker picker = ImagePicker();
-  late XFile? image = null;
+  late XFile? image;
   @override
   void initState() {
     super.initState();
