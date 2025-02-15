@@ -59,7 +59,9 @@ class _ProfileState extends State<Profile> {
             ListTile(
               title: Text("Order"),
               leading: Icon(Icons.shopping_cart_outlined),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, "/order");
+              },
             ),
             Divider(
               thickness: 1,
@@ -69,7 +71,9 @@ class _ProfileState extends State<Profile> {
             ListTile(
               title: Text("Discount & Offers"),
               leading: Icon(Icons.discount_outlined),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, "/discount");
+              },
             ),
             Divider(
               thickness: 1,
@@ -89,7 +93,10 @@ class _ProfileState extends State<Profile> {
             ListTile(
               title: Text("Help & Support"),
               leading: Icon(Icons.support_agent),
-              onTap: () {},
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Mail us at infant0467@gmail.com")));
+              },
             ),
             Divider(
               thickness: 1,

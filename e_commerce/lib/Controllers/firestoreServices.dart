@@ -12,6 +12,7 @@ class Firestoreservices {
   String product = "shop_Product";
   String su = "shop_user";
   String cart = "cart";
+  String order = "shop_Order";
 
   Future saveUserData({required String name, required String email}) async {
     try {
@@ -81,6 +82,15 @@ class Firestoreservices {
         .snapshots();
   }
 
+//reduce quantity
+  Future reduceQuentity(
+      {required String ProductId, required int quantity}) async {
+    return FirebaseFirestore.instance
+        .collection(product)
+        .doc(ProductId)
+        .update({"maxQuantity": FieldValue.increment(-quantity)});
+  }
+
   // Read the Cart
   Stream<QuerySnapshot> readUserCart() {
     return FirebaseFirestore.instance
@@ -143,5 +153,32 @@ class Firestoreservices {
         .collection(cart)
         .doc(productId)
         .update({"quantity": FieldValue.increment(-1)});
+  }
+
+  //Orders
+  Future<String> CreateOrder({required Map<String, dynamic> data}) async {
+    DocumentReference docRef =
+        await FirebaseFirestore.instance.collection(order).add(data);
+    return docRef.id;
+  }
+
+  Future UpdateOrderStatus(
+      {required String docId, required Map<String, dynamic> data}) async {
+    return FirebaseFirestore.instance.collection(order).doc(docId).update(data);
+  }
+
+  Stream<QuerySnapshot> readOrders() {
+    return FirebaseFirestore.instance
+        .collection(order)
+        .where("user_id", isEqualTo: user!.uid)
+        .orderBy("create_at", descending: true)
+        .snapshots();
+  }
+
+  Future CancleOrder({required String id}) {
+    return FirebaseFirestore.instance.collection(order).doc(id).update({
+      'status': "CANCELLED",
+      "onTheWayDate": DateTime.now().millisecondsSinceEpoch
+    });
   }
 }

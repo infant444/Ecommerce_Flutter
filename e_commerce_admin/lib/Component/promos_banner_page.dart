@@ -87,7 +87,7 @@ class _PromosBannerPageState extends State<PromosBannerPage> {
                                                                 context);
                                                           }));
                                             },
-                                            child: Text("Delete Category")),
+                                            child: Text("Delete")),
                                         TextButton(
                                             onPressed: () {
                                               Navigator.pop(context);
@@ -98,7 +98,7 @@ class _PromosBannerPageState extends State<PromosBannerPage> {
                                                     "detail": promos[index]
                                                   });
                                             },
-                                            child: Text("Update Category")),
+                                            child: Text("Update")),
                                       ],
                                     ));
                           },

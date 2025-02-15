@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
+import 'package:e_commerce/Controllers/auth_server.dart';
 import 'package:e_commerce/Controllers/firestoreServices.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:e_commerce/Provider/user.provider.dart';
+import 'package:e_commerce/model/order.model.dart';
+import 'package:e_commerce/model/product.model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +40,68 @@ class _CheckoutState extends State<Checkout> {
     ));
   }
 
-  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
+    final cart = Provider.of<CartProvider>(context, listen: false);
+    final user = Provider.of<UserProvider>(context, listen: false);
+    User? CurrentUser = FirebaseAuth.instance.currentUser;
+    List product = [];
+    for (int i = 0; i < cart.products.length; i++) {
+      product.add({
+        "id": cart.products[i].id,
+        "name": cart.products[i].name,
+        "image": cart.products[i].image,
+        "quentity": cart.carts[i].quantity,
+        "single_price": cart.products[i].new_price,
+        "total_price": cart.products[i].new_price * cart.carts[i].quantity
+      });
+    }
+    // ORDER STATUS
+    // PAID - Paid money by user
+    // SHIPPED - item shipped
+    // CANCELED - item cancelled
+    // DELIVERY - order delivery
+    // RETURN - return order
+    Map<String, dynamic> orderdata = {
+      "email": user.email,
+      "name": user.name,
+      "phone": user.phone,
+      "status": "Confirmed",
+      "user_id": CurrentUser!.uid,
+      "address": user.address,
+      "discount": discount,
+      "total": cart.totalCost - discount,
+      "paymentUrl": response.paymentId,
+      "products": product,
+      "create_at": DateTime.now().millisecondsSinceEpoch,
+      "receivedDate": 0,
+      "onTheWayDate": 0
+    };
+    final x = await Firestoreservices().CreateOrder(data: orderdata);
+    for (int i = 0; i < cart.products.length; i++) {
+      Firestoreservices().reduceQuentity(
+          ProductId: cart.products[i].id, quantity: cart.carts[i].quantity);
+    }
+    Map<String, dynamic> orderdata1 = {
+      "id": x,
+      "email": user.email,
+      "name": user.name,
+      "phone": user.phone,
+      "status": "Confirmed",
+      "user_id": CurrentUser!.uid,
+      "address": user.address,
+      "discount": discount,
+      "total": cart.totalCost,
+      "paymentUrl": response.paymentId,
+      "products": product,
+      "create_at": DateTime.now().millisecondsSinceEpoch,
+      "receivedDate": 0,
+      "onTheWayDate": 0
+    };
+    Navigator.pop(context);
+    Navigator.pop(context);
+
+    Navigator.pushNamed(context, "/payment_success", arguments: orderdata1);
+    await Firestoreservices().emptyCart();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         "Payment Done",

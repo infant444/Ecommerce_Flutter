@@ -2,6 +2,7 @@ import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbo
 import 'package:e_commerce/Container/cart_container.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
@@ -30,8 +31,7 @@ class _CartPageState extends State<CartPage> {
         } else {
           if (value.carts.isEmpty || value.products.isEmpty) {
             return Center(
-              child: Text("No item in cart"),
-            );
+                child: LottieBuilder.asset("asset/lottie/empty.json"));
           } else {
             return ListView.builder(
                 itemCount: value.carts.length,

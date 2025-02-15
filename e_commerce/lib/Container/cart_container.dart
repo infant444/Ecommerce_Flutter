@@ -104,44 +104,65 @@ class _CartContainerState extends State<CartContainer> {
                       SizedBox(
                         height: 6,
                       ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 3,
-                          ),
-                          Text(
-                            "$symbol ${widget.product.old_price}.00",
-                            style: TextStyle(
-                                color: Colors.grey[700],
-                                decoration: TextDecoration.lineThrough,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "$symbol ${widget.product.new_price}.00",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.arrow_downward_outlined,
-                            color: Colors.green,
-                            size: 20,
-                          ),
-                          Text(
-                            "${discountPrecent(widget.product.old_price, widget.product.new_price)}%",
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      )
+                      widget.product.maxQuantity > 0
+                          ? Row(
+                              children: [
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  "$symbol ${widget.product.old_price}.00",
+                                  style: TextStyle(
+                                      color: Colors.grey[700],
+                                      decoration: TextDecoration.lineThrough,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "$symbol ${widget.product.new_price}.00",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Icon(
+                                  Icons.arrow_downward_outlined,
+                                  color: Colors.green,
+                                  size: 20,
+                                ),
+                                Text(
+                                  "${discountPrecent(widget.product.old_price, widget.product.new_price)}%",
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Out of stock",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, "/specific",
+                                          arguments: {
+                                            "name": widget.product.category
+                                          });
+                                    },
+                                    child: Text("View smiler product"))
+                              ],
+                            )
                     ],
                   ),
                 ),

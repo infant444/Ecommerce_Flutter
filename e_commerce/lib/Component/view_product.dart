@@ -153,47 +153,75 @@ class _ViewProductState extends State<ViewProduct> {
           ),
         ),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          SizedBox(
-            height: 60,
-            width: MediaQuery.of(context).size.width * .5,
-            child: ElevatedButton(
-              onPressed: () {
-                Provider.of<CartProvider>(context, listen: false)
-                    .addToCart(Cart(productId: argument.id, quantity: 1));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Added to cart"),
-                  action: SnackBarAction(
-                      label: "Go to Cart",
-                      textColor: Colors.orangeAccent.shade400,
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/cart");
-                      }),
-                  dismissDirection: DismissDirection.startToEnd,
-                ));
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder()),
-              child: Text("Add to Cart"),
+      bottomNavigationBar: argument.maxQuantity > 0
+          ? Row(
+              children: [
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Provider.of<CartProvider>(context, listen: false)
+                          .addToCart(Cart(productId: argument.id, quantity: 1));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Added to cart"),
+                        action: SnackBarAction(
+                            label: "Go to Cart",
+                            textColor: Colors.orangeAccent.shade400,
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/cart");
+                            }),
+                        dismissDirection: DismissDirection.startToEnd,
+                      ));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder()),
+                    child: Text("Add to Cart"),
+                  ),
+                ),
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder()),
+                    child: Text("Buy Now"),
+                  ),
+                )
+              ],
+            )
+          : Container(
+              height: 60,
+              width: double.infinity,
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.notifications),
+                          Text(
+                            "Notify Me",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
+                          )
+                        ],
+                      ))
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 60,
-            width: MediaQuery.of(context).size.width * .5,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder()),
-              child: Text("Buy Now"),
-            ),
-          )
-        ],
-      ),
     );
   }
 }
