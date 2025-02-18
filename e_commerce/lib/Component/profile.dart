@@ -1,4 +1,5 @@
 import 'package:e_commerce/Controllers/auth_server.dart';
+import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:e_commerce/Provider/user.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -107,6 +108,10 @@ class _ProfileState extends State<Profile> {
               title: Text("Logout"),
               leading: Icon(Icons.logout_outlined),
               onTap: () {
+                Provider.of<UserProvider>(context, listen: false)
+                    .cancelProvider();
+                Provider.of<CartProvider>(context, listen: false)
+                    .cancelProvider();
                 AuthService().logout();
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/login", (route) => false);

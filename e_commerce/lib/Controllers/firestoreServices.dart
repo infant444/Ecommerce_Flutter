@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce/model/cart.model.dart';
+import 'package:e_commerce/model/product.model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Firestoreservices {
@@ -13,6 +14,8 @@ class Firestoreservices {
   String su = "shop_user";
   String cart = "cart";
   String order = "shop_Order";
+  String Wishlist = "shop_Wishlist";
+  String rating = "product_Rating";
 
   Future saveUserData({required String name, required String email}) async {
     try {
@@ -180,5 +183,53 @@ class Firestoreservices {
       'status': "CANCELLED",
       "onTheWayDate": DateTime.now().millisecondsSinceEpoch
     });
+  }
+
+  Future createWishList({required Map<String, dynamic> data}) async {
+    await FirebaseFirestore.instance
+        .collection(su)
+        .doc(user!.uid)
+        .collection(Wishlist)
+        .add(data);
+  }
+
+  Future<QuerySnapshot> readWishlist({required String productid}) {
+    return FirebaseFirestore.instance
+        .collection(su)
+        .doc(user!.uid)
+        .collection(Wishlist)
+        .where(
+          "productId",
+          isEqualTo: productid,
+        )
+        .get();
+  }
+
+  Future deleteWishlist({required String id}) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(su)
+        .doc(user!.uid)
+        .collection(Wishlist)
+        .where(
+          "productId",
+          isEqualTo: id,
+        )
+        .get();
+
+    for (DocumentSnapshot doc in querySnapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  Stream<DocumentSnapshot> readproductid({required String id}) {
+    return FirebaseFirestore.instance.collection(product).doc(id).snapshots();
+  }
+
+  Stream<QuerySnapshot> readallWishList() {
+    return FirebaseFirestore.instance
+        .collection(su)
+        .doc(user!.uid)
+        .collection(Wishlist)
+        .snapshots();
   }
 }

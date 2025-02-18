@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
 import 'package:e_commerce/Controllers/auth_server.dart';
 import 'package:e_commerce/Controllers/firestoreServices.dart';
+import 'package:e_commerce/Controllers/mail_services.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:e_commerce/Provider/user.provider.dart';
 import 'package:e_commerce/model/order.model.dart';
@@ -97,6 +98,8 @@ class _CheckoutState extends State<Checkout> {
       "receivedDate": 0,
       "onTheWayDate": 0
     };
+    MailServices()
+        .sendMailFromGmail(user.email, OrderModule.fromJson(orderdata, x));
     Navigator.pop(context);
     Navigator.pop(context);
 

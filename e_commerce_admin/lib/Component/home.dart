@@ -23,6 +23,8 @@ class _AdminHomeState extends State<AdminHome> {
         actions: [
           IconButton(
               onPressed: () {
+                Provider.of<AdminProvider>(context, listen: false)
+                    .cancelProvider();
                 AuthService().logout();
                 Navigator.pushNamedAndRemoveUntil(
                     context, "/login", (route) => false);
@@ -37,7 +39,7 @@ class _AdminHomeState extends State<AdminHome> {
           child: Column(
             children: [
               Container(
-                  height: 240,
+                  height: 300,
                   padding: EdgeInsets.all(15),
                   margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   decoration: BoxDecoration(
@@ -53,9 +55,24 @@ class _AdminHomeState extends State<AdminHome> {
                       DashBoardText(
                           keyWord: "Total Categories",
                           value: total_categories.toString()),
-                      DashBoardText(keyWord: "abc", value: "Hello"),
-                      DashBoardText(keyWord: "abc", value: "Hello"),
-                      DashBoardText(keyWord: "abc", value: "Hello"),
+                      DashBoardText(
+                          keyWord: "Total User",
+                          value: value.totalUser.toString()),
+                      DashBoardText(
+                          keyWord: "Total Orders",
+                          value: value.totalOrder.toString()),
+                      DashBoardText(
+                          keyWord: "Orders Shipped",
+                          value: value.totalOrderShipped.toString()),
+                      DashBoardText(
+                          keyWord: "Orders Delivered",
+                          value: value.totalOrderDelivery.toString()),
+                      DashBoardText(
+                          keyWord: "Orders Processed",
+                          value: value.totalOrderProcess.toString()),
+                      DashBoardText(
+                          keyWord: "Orders Cancelled",
+                          value: value.totalOrderCancelled.toString()),
                     ],
                   )),
               Row(

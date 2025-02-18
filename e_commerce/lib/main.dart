@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:e_commerce/Component/Specific_product.dart';
+import 'package:e_commerce/Component/Wishlist.dart';
 import 'package:e_commerce/Component/cart.dart';
 import 'package:e_commerce/Component/checkout.dart';
 import 'package:e_commerce/Component/discount.dart';
@@ -12,8 +13,10 @@ import 'package:e_commerce/Component/update_user.dart';
 import 'package:e_commerce/Component/view_order.dart';
 import 'package:e_commerce/Component/view_product.dart';
 import 'package:e_commerce/Controllers/auth_server.dart';
+import 'package:e_commerce/Controllers/Flutter_notification.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:e_commerce/Provider/user.provider.dart';
+import 'package:e_commerce/Provider/wishlist.provider.dart';
 import 'package:e_commerce/firebase_options.dart';
 import 'package:e_commerce/theme.dart';
 
@@ -27,6 +30,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await LocalNotification.init();
   await dotenv.load(fileName: ".env");
   // Stripe.publishableKey = dotenv.env["STRIPE_PUBLISHING_KEY"]!;
   // Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
@@ -48,6 +52,7 @@ class Ecommerce extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => UserProvider()),
           ChangeNotifierProvider(create: (context) => CartProvider()),
+          ChangeNotifierProvider(create: (context) => WishlistProvider()),
         ],
         child: MaterialApp(
           theme: light,
@@ -66,7 +71,8 @@ class Ecommerce extends StatelessWidget {
             "/checkout": (context) => Checkout(),
             "/order": (context) => OrderPage(),
             "/view_Order": (context) => ViewOrder(),
-            "/payment_success": (contex) => PaymentSuccess()
+            "/payment_success": (contex) => PaymentSuccess(),
+            "/wishlist": (context) => WishlistPage(),
           },
         ),
       ),

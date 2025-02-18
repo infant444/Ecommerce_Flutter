@@ -86,4 +86,15 @@ class CartProvider extends ChangeNotifier {
     Firestoreservices().decreaseCount(productId: productId);
     notifyListeners();
   }
+
+  void cancelProvider() {
+    _productSubscription?.cancel();
+    _cartSubscription?.cancel();
+  }
+
+  @override
+  void dispose() {
+    cancelProvider();
+    super.dispose();
+  }
 }

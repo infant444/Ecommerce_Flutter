@@ -3,6 +3,7 @@ import 'package:e_commerce/Component/home.dart';
 import 'package:e_commerce/Component/order_page.dart';
 import 'package:e_commerce/Component/profile.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
+import 'package:e_commerce/Provider/user.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,12 @@ class Homenav extends StatefulWidget {
 }
 
 class _HomenavState extends State<Homenav> {
+  @override
+  void initState() {
+    Provider.of<UserProvider>(context, listen: false);
+    super.initState();
+  }
+
   int selectedIndex = 0;
   List Pages = [Home(), OrderPage(), CartPage(), Profile()];
   @override

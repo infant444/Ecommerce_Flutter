@@ -1,9 +1,11 @@
 import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
 import 'package:e_commerce_admin/controllers/firestore_services.dart';
 import 'package:e_commerce_admin/model/order.model.dart';
+import 'package:e_commerce_admin/provider/admin.provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({super.key});
@@ -63,48 +65,39 @@ class _OrderPageState extends State<OrderPage> {
         scrolledUnderElevation: 0,
         forceMaterialTransparency: true,
       ),
-      body: StreamBuilder(
-          stream: FirestoreServices().readOrders(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<OrderModule> orders =
-                  OrderModule.fromJsonList(snapshot.data!.docs)
-                      as List<OrderModule>;
-              if (orders.isEmpty) {
-                return Center(
-                  child: Text("Orders not found"),
+      body: Consumer<AdminProvider>(builder: (context, value, child) {
+        List<OrderModule> orders =
+            OrderModule.fromJsonList(value.Order) as List<OrderModule>;
+        if (orders.isEmpty) {
+          return Center(
+            child: Text("Orders not found"),
+          );
+        } else {
+          return ListView.builder(
+              itemCount: orders.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/view_Order",
+                        arguments: orders[index]);
+                  },
+                  title: Text.rich(TextSpan(children: [
+                    TextSpan(text: "Order by "),
+                    TextSpan(
+                        text: orders[index].name,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: "\nItems worth "),
+                    TextSpan(
+                        text: "$symbol ${orders[index].total}",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ])),
+                  subtitle: Text(
+                      "Ordered on ${DateTime.fromMillisecondsSinceEpoch(orders[index].create_at).toString().formattedDate()}"),
+                  trailing: statusIcon(orders[index].status),
                 );
-              } else {
-                return ListView.builder(
-                    itemCount: orders.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          Navigator.pushNamed(context, "/view_Order",
-                              arguments: orders[index]);
-                        },
-                        title: Text.rich(TextSpan(children: [
-                          TextSpan(text: "Order by "),
-                          TextSpan(
-                              text: orders[index].name,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(text: "\nItems worth "),
-                          TextSpan(
-                              text: "$symbol ${orders[index].total}",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ])),
-                        subtitle: Text(
-                            "Ordered on ${DateTime.fromMillisecondsSinceEpoch(orders[index].create_at).toString().formattedDate()}"),
-                        trailing: statusIcon(orders[index].status),
-                      );
-                    });
-              }
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+              });
+        }
+      }),
     );
   }
 }

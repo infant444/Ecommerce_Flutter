@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbol.dart';
 import 'package:e_commerce/Controllers/discount.dart';
+import 'package:e_commerce/Controllers/firestoreServices.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
 import 'package:e_commerce/model/cart.model.dart';
+import 'package:e_commerce/model/wishlit.model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pannable_rating_bar/flutter_pannable_rating_bar.dart';
@@ -18,10 +21,23 @@ class ViewProduct extends StatefulWidget {
 
 class _ViewProductState extends State<ViewProduct> {
   String symbol = getCurrencySymbol("INR");
+  bool x = false;
+  Color c = Colors.grey;
+  String wid = "";
+  abc(String id) async {
+    QuerySnapshot querySnapshot =
+        await Firestoreservices().readWishlist(productid: id);
+    if (querySnapshot.docs.isNotEmpty) {
+      setState(() {
+        x = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Product;
+    abc(argument.id);
     return Scaffold(
       appBar: AppBar(
         title: Text("Product View"),
@@ -34,16 +50,59 @@ class _ViewProductState extends State<ViewProduct> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                color: Colors.white,
-                width: double.infinity,
-                height: 310,
-                child: Image.network(
-                  argument.image,
-                  height: 300,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ),
+              Stack(
+                children: [
+                  Container(
+                    color: Colors.white,
+                    width: double.infinity,
+                    height: 310,
+                    child: Image.network(
+                      argument.image,
+                      height: 300,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Positioned(
+                    top: 5, // Adjust for positioning
+                    right: 5, // Adjust for positioning
+                    child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            Map<String, dynamic> data = {
+                              "productId": argument.id
+                            };
+                            print(x);
+                            setState(() {
+                              if (x) {
+                                x = false;
+                                c = Colors.grey;
+                                Firestoreservices()
+                                    .deleteWishlist(id: argument.id);
+                              } else {
+                                x = true;
+
+                                Firestoreservices().createWishList(data: data);
+                                c = Colors.red;
+                              }
+                              print(x);
+                            });
+                            abc(argument.id);
+                            print(x);
+                          },
+                          icon: Icon(
+                            Icons.favorite,
+                            color: c,
+                            size: 30,
+                          ),
+                        )),
+                  ),
+                ],
               ),
               Padding(
                 padding: EdgeInsets.all(8),
@@ -185,7 +244,11 @@ class _ViewProductState extends State<ViewProduct> {
                   height: 60,
                   width: MediaQuery.of(context).size.width * .5,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<CartProvider>(context, listen: false)
+                          .addToCart(Cart(productId: argument.id, quantity: 1));
+                      Navigator.pushNamed(context, "/checkout");
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Theme.of(context).primaryColor,

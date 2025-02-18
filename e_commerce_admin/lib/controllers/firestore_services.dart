@@ -7,6 +7,7 @@ class FirestoreServices {
   String banner = "shop_Banner";
   String coupon = "Shop_Coupon";
   String order = "shop_Order";
+  String useX = "Users";
 
   // read data from shop_Categories collection of firestore
   Stream<QuerySnapshot> readCategories() {
@@ -136,5 +137,9 @@ class FirestoreServices {
         .collection(order)
         .orderBy("create_at", descending: true)
         .snapshots();
+  }
+
+  Stream<QuerySnapshot> readUserData() {
+    return FirebaseFirestore.instance.collection(useX).snapshots();
   }
 }
