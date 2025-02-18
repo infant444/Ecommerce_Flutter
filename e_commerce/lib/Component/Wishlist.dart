@@ -79,7 +79,7 @@ class _WishlistPageState extends State<WishlistPage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0),
-                itemCount: value.wish.length,
+                itemCount: value.product.length,
                 itemBuilder: (context, index) {
                   final product = value.product[index];
                   return GestureDetector(

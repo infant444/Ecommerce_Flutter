@@ -140,14 +140,30 @@ class _ViewOrderState extends State<ViewOrder> {
                                   Expanded(child: Text(e.name)),
                                 ],
                               ),
-                              Text(
-                                "$symbol${e.single_price.toString()} x ${e.quentity} quantity",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "$symbol${e.total_price}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              Row(
+                                children: [
+                                  arg.status == "DELIVERED"
+                                      ? ElevatedButton(
+                                          onPressed: () {},
+                                          child: Text("Rating"))
+                                      : SizedBox(),
+                                  Spacer(),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "$symbol${e.single_price.toString()} x ${e.quentity} quantity",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "$symbol${e.total_price}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  )
+                                ],
                               )
                             ],
                           ),

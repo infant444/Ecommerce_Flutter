@@ -226,6 +226,7 @@ class Firestoreservices {
   }
 
   Stream<QuerySnapshot> readallWishList() {
+    print("Hello");
     return FirebaseFirestore.instance
         .collection(su)
         .doc(user!.uid)

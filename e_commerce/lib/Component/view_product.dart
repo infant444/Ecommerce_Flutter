@@ -3,6 +3,7 @@ import 'package:currency_code_to_currency_symbol/currency_code_to_currency_symbo
 import 'package:e_commerce/Controllers/discount.dart';
 import 'package:e_commerce/Controllers/firestoreServices.dart';
 import 'package:e_commerce/Provider/cart.provider.dart';
+import 'package:e_commerce/Provider/wishlist.provider.dart';
 import 'package:e_commerce/model/cart.model.dart';
 import 'package:e_commerce/model/wishlit.model.dart';
 
@@ -28,15 +29,36 @@ class _ViewProductState extends State<ViewProduct> {
     QuerySnapshot querySnapshot =
         await Firestoreservices().readWishlist(productid: id);
     if (querySnapshot.docs.isNotEmpty) {
-      setState(() {
-        x = true;
-      });
+      if (mounted) {
+        // ✅ Check if widget is still in the tree
+        setState(() {
+          x = true;
+          c = Colors.red;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Product;
+    y() {
+      Map<String, dynamic> data = {"productId": argument.id};
+
+      setState(() {
+        if (x) {
+          c = Colors.grey;
+          Firestoreservices().deleteWishlist(id: argument.id);
+        } else {
+          Firestoreservices().createWishList(data: data);
+
+          c = Colors.red;
+        }
+        x = !x;
+        print(x);
+      });
+    }
+
     abc(argument.id);
     return Scaffold(
       appBar: AppBar(
@@ -74,25 +96,9 @@ class _ViewProductState extends State<ViewProduct> {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            Map<String, dynamic> data = {
-                              "productId": argument.id
-                            };
                             print(x);
-                            setState(() {
-                              if (x) {
-                                x = false;
-                                c = Colors.grey;
-                                Firestoreservices()
-                                    .deleteWishlist(id: argument.id);
-                              } else {
-                                x = true;
-
-                                Firestoreservices().createWishList(data: data);
-                                c = Colors.red;
-                              }
-                              print(x);
-                            });
-                            abc(argument.id);
+                            y();
+                            // abc(argument.id);
                             print(x);
                           },
                           icon: Icon(
